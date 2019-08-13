@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source ./vars
+
+function build() {
+    npm run build
+}
+
+function start() {
+    npm run debug
+}
+
+killOnAllPorts
+inEachRepo build
+inEachRepo start true

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source ./vars
+
+echo 'Clone repos...'
+
+function clone() { git clone $github/$account/$1.git; }
+
+forEachRepo clone
+
+echo 'npm isnstall...'
+
+function install() {
+    npm install;
+}
+inEachRepo install
