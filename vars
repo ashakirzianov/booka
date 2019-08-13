@@ -1,0 +1,44 @@
+#!/bin/bash
+
+github=https://github.com
+account=ashakirzianov
+
+lib=booka-lib
+back=booka-back
+front=booka-front
+
+repos=($lib $back $front)
+ports=(3141 3042 3000)
+
+function forEachRepo() {
+    for repo in ${repos[@]}
+    do $1 $repo
+    done
+}
+
+function inEachRepo() {
+    local op='&&'
+    if [ $2 ]; then
+    op='&';
+    fi
+    local cmd='';
+    for repo in ${repos[@]}
+    do
+    cmd="$cmd cd ./$repo && $1 $repo $op cd .. $op"
+    done
+    cmd="$cmd cd ."
+    # echo $cmd
+    eval $cmd
+}
+
+function killOnPort() {
+    lsof -ti:$1 | xargs kill;
+}
+
+function killOnAllPorts() {
+    for port in ${ports[@]}
+    do
+        killOnPort $port
+    done
+}
+
